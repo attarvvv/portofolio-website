@@ -214,6 +214,43 @@ body {
   transform: translateX(24px);
 }
 
+/* Language Toggle */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--switch-bg);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: all var(--transition-base);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.lang-toggle:hover {
+  border-color: var(--accent-bright);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.lang-active {
+  color: var(--accent-bright);
+}
+
+.lang-inactive {
+  color: var(--text-muted);
+}
+
+.lang-divider {
+  color: var(--border);
+  font-weight: 300;
+}
+
 /* ============================================
    HERO SECTION
    ============================================ */

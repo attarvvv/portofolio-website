@@ -2,25 +2,22 @@ import { useEffect, useRef } from 'react'
 import { Mail, Phone } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useLang } from '../context/LanguageContext'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// Custom SVG Icons matching Lucide style (24x24, 2px stroke)
 const GithubIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
     <path d="M9 18c-4.51 2-5-2-7-2" />
   </svg>
 )
-
 const LinkedinIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-    <rect width="4" height="12" x="2" y="9" />
-    <circle cx="4" cy="4" r="2" />
+    <rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" />
   </svg>
 )
-
 const InstagramIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
@@ -28,7 +25,6 @@ const InstagramIcon = ({ size = 20 }) => (
     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
   </svg>
 )
-
 const WhatsAppIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
@@ -37,78 +33,30 @@ const WhatsAppIcon = ({ size = 20 }) => (
 )
 
 const Contact = () => {
+  const { t } = useLang()
   const sectionRef = useRef(null)
   const innerRef = useRef(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const el = innerRef.current
-
-      gsap.fromTo(
-        el.querySelector('.contact-title'),
-        { y: 50, opacity: 0, scale: 0.9 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-          },
-        }
-      )
-
-      gsap.fromTo(
-        el.querySelector('.contact-subtitle'),
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          delay: 0.2,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-          },
-        }
-      )
-
-      gsap.fromTo(
-        el.querySelectorAll('.contact-btn'),
-        { scale: 0.8, opacity: 0, y: 20 },
-        {
-          scale: 1,
-          opacity: 1,
-          y: 0,
-          stagger: 0.15,
-          duration: 0.9,
-          ease: 'back.out(1.7)',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-          },
-        }
-      )
-
-      gsap.fromTo(
-        el.querySelectorAll('.social-link'),
-        { scale: 0, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          stagger: 0.1,
-          duration: 0.7,
-          ease: 'back.out(2)',
-          scrollTrigger: {
-            trigger: el.querySelector('.contact-socials'),
-            start: 'top 90%',
-          },
-        }
-      )
+      gsap.fromTo(el.querySelector('.contact-title'), { y: 50, opacity: 0, scale: 0.9 }, {
+        y: 0, opacity: 1, scale: 1, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+      })
+      gsap.fromTo(el.querySelector('.contact-subtitle'), { y: 30, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 0.8, delay: 0.2,
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+      })
+      gsap.fromTo(el.querySelectorAll('.contact-btn'), { scale: 0.8, opacity: 0, y: 20 }, {
+        scale: 1, opacity: 1, y: 0, stagger: 0.15, duration: 0.9, ease: 'back.out(1.7)',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
+      })
+      gsap.fromTo(el.querySelectorAll('.social-link'), { scale: 0, opacity: 0 }, {
+        scale: 1, opacity: 1, stagger: 0.1, duration: 0.7, ease: 'back.out(2)',
+        scrollTrigger: { trigger: el.querySelector('.contact-socials'), start: 'top 90%' },
+      })
     })
-
     return () => ctx.revert()
   }, [])
 
@@ -116,28 +64,17 @@ const Contact = () => {
     <section className="contact-section" id="contact" ref={sectionRef}>
       <div className="contact-inner" ref={innerRef}>
         <h2 className="contact-title">
-          LET'S WORK<br />TOGETHER
+          {t('contact_title_line1')}<br />{t('contact_title_line2')}
         </h2>
-
-        <p className="contact-subtitle">
-          Punya proyek menarik atau ingin berdiskusi? Hubungi saya di{' '}
-          <strong style={{ color: 'var(--text-primary)' }}>attar.dev@gmail.com</strong>{' '}
-          atau melalui WhatsApp.
-        </p>
+        <p className="contact-subtitle">{t('contact_subtitle')}</p>
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a
-            href="mailto:attar.dev@gmail.com"
-            className="contact-btn"
-          >
+          <a href="mailto:attar.dev@gmail.com" className="contact-btn">
             <Mail size={18} />
             <span>Gmail</span>
           </a>
-
           <a
-            href="https://wa.me/6281380683407"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="https://wa.me/6281380683407" target="_blank" rel="noopener noreferrer"
             className="contact-btn"
             style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
           >
@@ -146,46 +83,17 @@ const Contact = () => {
           </a>
         </div>
 
-        {/* Social links */}
         <div className="contact-socials">
-          <a
-            href="https://github.com/attarvvv"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-link"
-            aria-label="GitHub"
-            title="GitHub"
-          >
+          <a href="https://github.com/attarvvv" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="GitHub">
             <GithubIcon size={20} />
           </a>
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-link"
-            aria-label="LinkedIn"
-            title="LinkedIn"
-          >
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="LinkedIn">
             <LinkedinIcon size={20} />
           </a>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-link"
-            aria-label="Instagram"
-            title="Instagram"
-          >
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Instagram">
             <InstagramIcon size={20} />
           </a>
-          <a
-            href="https://wa.me/6281380683407"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-link"
-            aria-label="WhatsApp"
-            title="WhatsApp"
-          >
+          <a href="https://wa.me/6281380683407" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="WhatsApp">
             <WhatsAppIcon size={20} />
           </a>
         </div>
