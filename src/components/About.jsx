@@ -1,58 +1,109 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const skills = [
-  { name: 'React / React Native', percent: 92 },
-  { name: 'Node.js / Express', percent: 85 },
-  { name: 'TypeScript', percent: 80 },
-  { name: 'UI/UX Design (Figma)', percent: 78 },
-  { name: 'PostgreSQL / MySQL', percent: 82 },
-  { name: 'Laravel / PHP', percent: 75 },
+  { name: 'Next.js & React.js', percent: 92 },
+  { name: 'React Native (Expo)', percent: 88 },
+  { name: 'Express.js & Node.js', percent: 85 },
+  { name: 'JavaScript & TypeScript', percent: 90 },
+  { name: 'Tailwind CSS', percent: 95 },
+  { name: 'Supabase & MySQL', percent: 84 },
+  { name: 'UI/UX Design (Figma)', percent: 82 },
+  { name: 'Postman (API Testing)', percent: 86 },
 ]
 
 const stats = [
-  { number: '20+', label: 'Projects Done' },
-  { number: '3+', label: 'Years Experience' },
-  { number: '10+', label: 'Happy Clients' },
+  { number: '89', label: 'RPL Test Score' },
+  { number: '3+', label: 'Informatics Medals' },
+  { number: '3+', label: 'Real Web Projects' },
 ]
 
 const About = () => {
   const sectionRef = useRef(null)
-  const [visible, setVisible] = useState(false)
-  const [skillsAnimated, setSkillsAnimated] = useState(false)
+  const leftColRef = useRef(null)
+  const rightColRef = useRef(null)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          setTimeout(() => setSkillsAnimated(true), 300)
+    const ctx = gsap.context(() => {
+      // Left Column Animation
+      gsap.fromTo(
+        leftColRef.current?.children,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.15,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+          },
         }
-      },
-      { threshold: 0.2 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
+      )
+
+      // Stat Cards Animation
+      gsap.fromTo(
+        leftColRef.current?.querySelectorAll('.stat-card'),
+        { scale: 0.7, opacity: 0, y: 30 },
+        {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          stagger: 0.12,
+          duration: 0.8,
+          ease: 'back.out(1.7)',
+          scrollTrigger: {
+            trigger: leftColRef.current?.querySelector('.about-stats'),
+            start: 'top 85%',
+          },
+        }
+      )
+
+      // Skills Fill Bar Animation with GSAP
+      const skillFills = rightColRef.current?.querySelectorAll('.skill-fill')
+      skillFills?.forEach((fill) => {
+        const targetWidth = fill.getAttribute('data-percent')
+        gsap.fromTo(
+          fill,
+          { width: '0%' },
+          {
+            width: `${targetWidth}%`,
+            duration: 1.4,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: rightColRef.current,
+              start: 'top 80%',
+            },
+          }
+        )
+      })
+    })
+
+    return () => ctx.revert()
   }, [])
 
   return (
     <section className="about-section" id="about" ref={sectionRef}>
-      <div className={`about-grid reveal ${visible ? 'visible' : ''}`}>
+      <div className="about-grid">
         {/* Left Column */}
-        <div>
+        <div ref={leftColRef}>
           <h2 className="about-title">
-            Building Digital<br />
-            <span>Experiences</span> That Matter
+            Passionate Software<br />
+            <span>Engineering</span> Student
           </h2>
           <p className="about-description">
-            Saya seorang Full Stack Developer yang passionate dalam membangun
-            aplikasi web dan mobile yang scalable, performant, dan user-friendly.
-            Saya percaya bahwa kode yang baik adalah kode yang bisa dibaca,
-            dimaintain, dan terus berkembang.
+            Siswa Software Engineering di SMK Taruna Bhakti dengan ketertarikan tinggi
+            pada Web Development dan UI/UX Design. Terbiasa membangun aplikasi web &amp; mobile
+            yang responsif dan modern menggunakan Next.js, React Native, Express.js, MySQL, dan Supabase.
           </p>
           <p className="about-description">
-            Dengan pengalaman di berbagai stack teknologi dari React dan Node.js
-            hingga Laravel dan React Native. saya siap membantu mewujudkan
-            ide Anda menjadi produk digital yang nyata.
+            Gold Medalist Informatics KOSINUS 2024 &amp; Silver Medalist K2SN 2024 dengan
+            nilai RPL Competency Test 89. Selalu beradaptasi dengan teknologi baru dan berfokus menciptakan
+            pengalaman digital yang user-friendly.
           </p>
 
           {/* Stats */}
@@ -67,7 +118,7 @@ const About = () => {
         </div>
 
         {/* Right Column - Skills */}
-        <div>
+        <div ref={rightColRef}>
           <div className="skills-grid">
             {skills.map((skill, i) => (
               <div className="skill-row" key={i}>
@@ -78,10 +129,8 @@ const About = () => {
                 <div className="skill-bar">
                   <div
                     className="skill-fill"
-                    style={{
-                      width: skillsAnimated ? `${skill.percent}%` : '0%',
-                      transitionDelay: `${i * 0.1}s`,
-                    }}
+                    data-percent={skill.percent}
+                    style={{ width: '0%' }}
                   />
                 </div>
               </div>

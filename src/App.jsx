@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import Marquee from './components/Marquee'
 import About from './components/About'
+import TechStackBento from './components/TechStackBento'
 import Works from './components/Works'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
@@ -23,8 +23,8 @@ function App() {
     <div className="app" data-theme={theme === 'light' ? 'light' : undefined}>
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       <Hero />
-      <Marquee />
       <About />
+      <TechStackBento />
       <Works />
       <Contact />
       <Footer />

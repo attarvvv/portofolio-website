@@ -1,5 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
-import { Mail } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { Mail, Phone } from 'lucide-react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 // Custom SVG Icons matching Lucide style (24x24, 2px stroke)
 const GithubIcon = ({ size = 20 }) => (
@@ -34,43 +38,118 @@ const WhatsAppIcon = ({ size = 20 }) => (
 
 const Contact = () => {
   const sectionRef = useRef(null)
-  const [visible, setVisible] = useState(false)
+  const innerRef = useRef(null)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisible(true)
-      },
-      { threshold: 0.2 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
+    const ctx = gsap.context(() => {
+      const el = innerRef.current
+
+      gsap.fromTo(
+        el.querySelector('.contact-title'),
+        { y: 50, opacity: 0, scale: 0.9 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+          },
+        }
+      )
+
+      gsap.fromTo(
+        el.querySelector('.contact-subtitle'),
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+          },
+        }
+      )
+
+      gsap.fromTo(
+        el.querySelectorAll('.contact-btn'),
+        { scale: 0.8, opacity: 0, y: 20 },
+        {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          stagger: 0.15,
+          duration: 0.9,
+          ease: 'back.out(1.7)',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 70%',
+          },
+        }
+      )
+
+      gsap.fromTo(
+        el.querySelectorAll('.social-link'),
+        { scale: 0, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.7,
+          ease: 'back.out(2)',
+          scrollTrigger: {
+            trigger: el.querySelector('.contact-socials'),
+            start: 'top 90%',
+          },
+        }
+      )
+    })
+
+    return () => ctx.revert()
   }, [])
 
   return (
     <section className="contact-section" id="contact" ref={sectionRef}>
-      <div className={`contact-inner reveal ${visible ? 'visible' : ''}`}>
+      <div className="contact-inner" ref={innerRef}>
         <h2 className="contact-title">
           LET'S WORK<br />TOGETHER
         </h2>
 
         <p className="contact-subtitle">
-          Punya proyek menarik atau ingin berdiskusi? Jangan ragu untuk
-          menghubungi saya. Siap berkolaborasi!
+          Punya proyek menarik atau ingin berdiskusi? Hubungi saya di{' '}
+          <strong style={{ color: 'var(--text-primary)' }}>attar.dev@gmail.com</strong>{' '}
+          atau melalui WhatsApp.
         </p>
 
-        <a
-          href="mailto:attar@example.com"
-          className="contact-btn"
-        >
-          <Mail size={18} />
-          <span>Send Me a Message</span>
-        </a>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <a
+            href="mailto:attar.dev@gmail.com"
+            className="contact-btn"
+          >
+            <Mail size={18} />
+            <span>Gmail</span>
+          </a>
+
+          <a
+            href="https://wa.me/6281380683407"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-btn"
+            style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}
+          >
+            <Phone size={18} color="var(--accent-bright)" />
+            <span>WhatsApp</span>
+          </a>
+        </div>
 
         {/* Social links */}
         <div className="contact-socials">
           <a
-            href="https://github.com"
+            href="https://github.com/attarvvv"
             target="_blank"
             rel="noopener noreferrer"
             className="social-link"
@@ -100,7 +179,7 @@ const Contact = () => {
             <InstagramIcon size={20} />
           </a>
           <a
-            href="https://wa.me/62xxxxxxxxxx"
+            href="https://wa.me/6281380683407"
             target="_blank"
             rel="noopener noreferrer"
             className="social-link"

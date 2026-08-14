@@ -1,93 +1,114 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import {
-  Zap,
-  ShoppingCart,
-  BarChart3,
-  Palette,
-  Lock,
-  Smartphone,
-  ArrowUpRight
+  Music,
+  FileSpreadsheet,
+  BookOpen,
+  ArrowUpRight,
+  Globe
 } from 'lucide-react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
   {
-    Icon: Zap,
-    tags: ['React Native', 'Node.js'],
-    title: 'ThunderBolt Garage App',
-    desc: 'Aplikasi mobile untuk manajemen bengkel otomotif dengan fitur booking, tracking order, dan manajemen pelanggan.',
+    Icon: Music,
+    tags: ['Next.js', 'React.js', 'Supabase'],
+    title: 'Wavely — Music Streaming Web',
+    desc: 'Aplikasi streaming musik modern yang memungkinkan pengguna menjelajahi & memutar lagu dengan antarmuka intuitif. Terintegrasi dengan Supabase untuk autentikasi & real-time data.',
+    github: 'https://github.com/attarvvv',
   },
   {
-    Icon: ShoppingCart,
-    tags: ['Next.js', 'PostgreSQL'],
-    title: 'E-Commerce Platform',
-    desc: 'Platform e-commerce modern dengan fitur payment gateway, real-time inventory, dan analytics dashboard.',
+    Icon: FileSpreadsheet,
+    tags: ['React.js', 'Express.js', 'Tailwind'],
+    title: 'CITIZENCARE ID',
+    desc: 'Platform pelaporan warga berbasis web yang memungkinkan masyarakat mengajukan & mengelola pengaduan publik secara efisien dengan responsif UI.',
+    github: 'https://github.com/attarvvv',
   },
   {
-    Icon: BarChart3,
-    tags: ['React', 'Laravel'],
-    title: 'HR Management System',
-    desc: 'Sistem manajemen SDM dengan fitur absensi, penggajian otomatis, dan laporan kinerja karyawan.',
-  },
-  {
-    Icon: Palette,
-    tags: ['Figma', 'UI/UX'],
-    title: 'Design System',
-    desc: 'Comprehensive design system dengan komponen yang reusable, dokumentasi, dan design tokens.',
-  },
-  {
-    Icon: Lock,
-    tags: ['Node.js', 'MongoDB'],
-    title: 'Auth Microservice',
-    desc: 'Microservice autentikasi dengan JWT, OAuth2, 2FA, dan rate limiting untuk keamanan maksimal.',
-  },
-  {
-    Icon: Smartphone,
-    tags: ['React Native', 'Expo'],
-    title: 'Fitness Tracker App',
-    desc: 'Aplikasi mobile fitness dengan tracking workout, diet planning, dan progress visualization.',
+    Icon: BookOpen,
+    tags: ['React.js', 'MySQL', 'Node.js'],
+    title: 'PHORIUM LIBRARY',
+    desc: 'Aplikasi manajemen perpustakaan web untuk merampingkan operasional perpustakaan, peminjaman buku, inventaris, dan pencatatan data secara efisien.',
+    github: 'https://github.com/attarvvv',
   },
 ]
 
 const Works = () => {
   const sectionRef = useRef(null)
-  const [visible, setVisible] = useState(false)
+  const headerRef = useRef(null)
+  const gridRef = useRef(null)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisible(true)
-      },
-      { threshold: 0.1 }
-    )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
+    const ctx = gsap.context(() => {
+      // Header Animation
+      gsap.fromTo(
+        headerRef.current,
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          },
+        }
+      )
+
+      // Project Cards Stagger Animation
+      gsap.fromTo(
+        gridRef.current?.children,
+        { y: 60, opacity: 0, scale: 0.94 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          stagger: 0.18,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: 'top 80%',
+          },
+        }
+      )
+    })
+
+    return () => ctx.revert()
   }, [])
 
   return (
     <section className="works-section" id="portfolio" ref={sectionRef}>
-      <div className={`reveal ${visible ? 'visible' : ''}`}>
-        <div className="section-header">
+      <div>
+        <div className="section-header" ref={headerRef}>
           <div>
             <h2 className="section-title">
-              Featured <span>Works</span>
+              Featured <span>Projects</span>
             </h2>
           </div>
-          <a href="#" className="view-all-link">
-            View All Projects <ArrowUpRight size={16} />
+          <a
+            href="https://github.com/attarvvv"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="view-all-link"
+          >
+            View GitHub Profile <ArrowUpRight size={16} />
           </a>
         </div>
 
-        <div className="works-grid">
+        <div className="works-grid" ref={gridRef}>
           {projects.map((project, i) => {
             const CardIcon = project.Icon
             return (
               <div
                 className="work-card"
                 key={i}
-                style={{ transitionDelay: `${i * 0.08}s` }}
               >
                 <div className="work-card-image-placeholder">
-                  <CardIcon size={48} color="var(--accent-bright)" style={{ position: 'relative', zIndex: 1 }} />
+                  <CardIcon size={52} color="var(--accent-bright)" style={{ position: 'relative', zIndex: 1 }} />
                 </div>
                 <div className="work-card-body">
                   <div className="work-card-tags">

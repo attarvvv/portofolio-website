@@ -1,31 +1,32 @@
 import {
-  Code2,
-  Server,
-  Globe,
-  Database,
-  Smartphone,
-  Cpu,
   Layers,
-  Box,
-  GitBranch,
+  Code2,
+  Smartphone,
+  Server,
+  Cpu,
+  Globe,
+  FileCode,
   Palette,
-  ShieldCheck,
-  Terminal
+  Database,
+  Table,
+  CheckCircle2,
+  Terminal,
+  Send
 } from 'lucide-react'
 
 const brands = [
-  { Icon: Code2, name: 'React JS' },
-  { Icon: Server, name: 'Node.js' },
-  { Icon: Globe, name: 'TypeScript' },
   { Icon: Layers, name: 'Next.js' },
-  { Icon: Smartphone, name: 'React Native' },
-  { Icon: Cpu, name: 'Laravel' },
-  { Icon: Database, name: 'PostgreSQL' },
-  { Icon: Box, name: 'MongoDB' },
-  { Icon: Palette, name: 'Figma' },
+  { Icon: Code2, name: 'React.js' },
+  { Icon: Smartphone, name: 'React Native Expo' },
+  { Icon: Server, name: 'Node.js' },
+  { Icon: Cpu, name: 'Express.js' },
+  { Icon: Globe, name: 'JavaScript' },
+  { Icon: FileCode, name: 'TypeScript' },
   { Icon: Terminal, name: 'Tailwind CSS' },
-  { Icon: ShieldCheck, name: 'Docker' },
-  { Icon: GitBranch, name: 'Git & GitHub' },
+  { Icon: Palette, name: 'Figma' },
+  { Icon: Database, name: 'Supabase' },
+  { Icon: Table, name: 'MySQL' },
+  { Icon: Send, name: 'Postman (API Testing)' },
 ]
 
 const Marquee = () => {
