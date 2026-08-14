@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Sun, Moon } from 'lucide-react'
+import { Sun, Moon, Menu, X } from 'lucide-react'
 import { useLang } from '../context/LanguageContext'
 
 const Navbar = ({ theme, toggleTheme }) => {
   const [scrolled, setScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { lang, toggleLang, t } = useLang()
 
   useEffect(() => {
@@ -13,6 +14,7 @@ const Navbar = ({ theme, toggleTheme }) => {
   }, [])
 
   const scrollTo = (id) => {
+    setIsMobileMenuOpen(false)
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
@@ -27,7 +29,7 @@ const Navbar = ({ theme, toggleTheme }) => {
       </a>
 
       {/* Nav links */}
-      <ul className="navbar-nav">
+      <ul className={`navbar-nav ${isMobileMenuOpen ? 'open' : ''}`}>
         <li><a href="#services" onClick={e => { e.preventDefault(); scrollTo('services') }}>{t('nav_services')}</a></li>
         <li><a href="#portfolio" onClick={e => { e.preventDefault(); scrollTo('portfolio') }}>{t('nav_portfolio')}</a></li>
         <li><a href="#contact" onClick={e => { e.preventDefault(); scrollTo('contact') }}>{t('nav_contact')}</a></li>
@@ -61,6 +63,15 @@ const Navbar = ({ theme, toggleTheme }) => {
               <Sun size={12} color="#04150e" />
             )}
           </div>
+        </button>
+
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="mobile-menu-toggle" 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMobileMenuOpen ? <X size={24} color={theme === 'light' ? '#04150e' : '#ffffff'} /> : <Menu size={24} color={theme === 'light' ? '#04150e' : '#ffffff'} />}
         </button>
       </div>
     </nav>
